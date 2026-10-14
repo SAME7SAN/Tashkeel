@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُشَكِّل الحروف الذكي (بدون إعراب)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .section-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #34495e;
+            display: block;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            resize: vertical;
+            box-sizing: border-box;
+            background-color: #fafafa;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background-color: #fff;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-process {
+            background-color: #10b981;
+            color: white;
+            flex: 2;
+        }
+        .btn-process:hover { background-color: #059669; }
+        
+        .btn-clear {
+            background-color: #ef4444;
+            color: white;
+            flex: 1;
+        }
+        .btn-clear:hover { background-color: #dc2626; }
+
+        .btn-save {
+            background-color: #3b82f6;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn-save:hover { background-color: #2563eb; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>مشكل الحروف الذكي بالقرائن الإملائية</h2>
+    
+    <label class="section-label">النص المراد تشكيله (المدخلات):</label>
+    <textarea id="inputText" placeholder="اكتب أو الصق النص هنا..."></textarea>
+    
+    <div class="btn-group">
+        <button class="btn-process" onclick="runDiacritization()">✨ تشكيل النص</button>
+        <button class="btn-clear" onclick="clearFields()">مسح الكل</button>
+    </div>
+
+    <label class="section-label">النص المشكول (المخرجات):</label>
+    <textarea id="outputText" readonly placeholder="ستظهر النتيجة هنا..."></textarea>
+    
+    <button class="btn-save" onclick="saveToFile()">💾 حفظ المخرجات في ملف نصي (.txt)</button>
+</div>
+
+<script>
+    const sunLetters = "تثدذرزسشصضطظلن";
+    const moonLetters = "أبجحخعغفقكهموي";
+
+    function diacritizeText(text) {
+        // 1. قواعد الـ التعريف (الشمسية والقمرية)
+        // البحث عن كلمة تبدأ بـ "ال" يليها حرف
+        const alPattern = /\bال([إأآبجحخعغفقكهمونسطذرزشصضتثدئؤهويني])/g;
+        text = text.replace(alPattern, (match, nextChar) => {
+            if (sunLetters.includes(nextChar)) {
+                return `اَل${nextChar}ّ`;
+            } else if (moonLetters.includes(nextChar)) {
+                return `اَلْ${nextChar}`;
+            }
+            return match;
+        });
+
+        // 2. الهمزات الثابتة
+        text = text.replaceAll('إ', 'إِ');
+        text = text.replaceAll('ئ', 'ئِ');
+        text = text.replaceAll('ؤ', 'ؤُ');
+
+        // 3. المد بالألف والألف اللينة (ى) -> الحرف قبله مفتوح
+        const maddAlifPattern = /([بجحخعغفقكهمونسطذرزشصضتثدئؤإأآلرىوإـ])(ا|ى)/g;
+        text = text.replace(maddAlifPattern, '$1َ$2');
+
+        // 4. المد بالواو -> الحرف قبله مضموم
+        const maddWawPattern = /([بجحخعغفقكهمونسطذرزشصضتثدئؤإأآلرىو])و/g;
+        text = text.replace(maddWawPattern, '$1ُو');
+
+        // 5. المد بالياء -> الحرف قبله مكسور
+        const maddYaPattern = /([بجحخعغفقكهمونسطذرزشصضتثدئؤإأآلرىو])ي/g;
+        text = text.replace(maddYaPattern, '$1ِي');
+
+        // 6. التاء المربوطة -> الحرف قبله مفتوح
+        const taaPattern = /([بجحخعغفقكهمونسطذرزشصضتثدئؤإأآلرىو])ة/g;
+        text = text.replace(taaPattern, '$1َة');
+
+        return text;
+    }
+
+    function runDiacritization() {
+        const input = document.getElementById('inputText').value;
+        if (!input.trim()) {
+            alert("الرجاء إدخال نص أولاً لتشكيله!");
+            return;
+        }
+        const result = diacritizeText(input);
+        document.getElementById('outputText').value = result;
+    }
+
+    function clearFields() {
+        document.getElementById('inputText').value = '';
+        document.getElementById('outputText').value = '';
+    }
+
+    function saveToFile() {
+        const result = document.getElementById('outputText').value;
+        if (!result.trim()) {
+            alert("لا توجد مخرجات لحفظها!");
+            return;
+        }
+        
+        const blob = new Blob([result], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'tashkeel_output.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+</script>
+
+</body>
+</html>
