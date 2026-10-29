@@ -4,39 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُشَكِّل الحروف الذكي - النسخة النهائية V3</title>
+    <title>مُشَكِّل الحروف الذكي - إعداد الأديب سامح النجار</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f4f6f9;
-            --container-bg: #ffffff;
-            --text-color: #2c3e50;
-            --label-color: #34495e;
-            --textarea-bg: #fafafa;
-            --textarea-border: #cbd5e1;
-            --textarea-text: #2c3e50;
-            --note-color: #64748b;
-            --primary: #10b981;
-            --primary-hover: #059669;
-        }
-        [data-theme="dark"] {
-            --bg-color: #0f172a;
-            --container-bg: #1e293b;
-            --text-color: #f8fafc;
-            --label-color: #e2e8f0;
-            --textarea-bg: #0f172a;
-            --textarea-border: #334155;
-            --textarea-text: #f8fafc;
+            --bg-color: #070a14;
+            --container-bg: #121a2f;
+            --text-color: #f1f5f9;
+            --label-color: #cbd5e1;
+            --textarea-bg: #0b1226;
+            --textarea-border: #263455;
+            --textarea-text: #f1f5f9;
             --note-color: #94a3b8;
+            --border: #25304f;
+            --primary: #10b981;
+        }
+        [data-theme="light"] {
+            --bg-color: #f3f6fb;
+            --container-bg: #ffffff;
+            --text-color: #0f172a;
+            --label-color: #334155;
+            --textarea-bg: #fbfdff;
+            --textarea-border: #cbd5e1;
+            --textarea-text: #0f172a;
+            --note-color: #64748b;
+            --border: #e2e8f0;
+        }
+        [data-theme="white"] {
+            --bg-color: #ffffff;
+            --container-bg: #ffffff;
+            --text-color: #111827;
+            --label-color: #1f2937;
+            --textarea-bg: #ffffff;
+            --textarea-border: #d1d5db;
+            --textarea-text: #111827;
+            --note-color: #6b7280;
+            --border: #e5e7eb;
         }
         body {
-            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-color);
             margin: 0;
             padding: 20px;
             color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
-            line-height: 1.8;
+            transition: all 0.3s;
         }
         .container {
             max-width: 900px;
@@ -44,7 +55,8 @@
             background: var(--container-bg);
             padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
         .header-flex {
             display: flex;
@@ -54,21 +66,20 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        h2 {
-            color: var(--text-color);
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-        }
+        h2 { margin:0; font-weight:700; }
         .theme-toggle {
-            background-color: #64748b;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
+            background: var(--textarea-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: bold;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.2s;
         }
+        .theme-toggle:hover { transform: scale(1.05); }
         .section-label {
             font-weight: bold;
             margin-bottom: 8px;
@@ -78,11 +89,11 @@
         }
         textarea {
             width: 100%;
-            min-height: 140px;
+            min-height: 260px;
             padding: 14px;
             font-size: 19px;
             font-family: 'Amiri', serif;
-            line-height: 2.1;
+            line-height: 2.2;
             border: 1px solid var(--textarea-border);
             border-radius: 12px;
             resize: vertical;
@@ -91,122 +102,35 @@
             color: var(--textarea-text);
             transition: all 0.3s;
         }
-        textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 12px 20px;
-            font-size: 15px;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Cairo', sans-serif;
-        }
-        .btn-process {
-            background-color: var(--primary);
-            color: white;
-            flex: 2;
-        }
-        .btn-process:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-        .btn-clear {
-            background-color: #ef4444;
-            color: white;
-            flex: 1;
-        }
-        .btn-clear:hover { background-color: #dc2626; }
-        .btn-save, .btn-copy {
-            background-color: #3b82f6;
-            color: white;
-        }
-        .btn-save:hover, .btn-copy:hover { background-color: #2563eb; }
-        .footer-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .footer-actions button { flex: 1; }
-        .note {
-            font-size: 12px;
-            color: var(--note-color);
-            margin-top: 15px;
-            text-align: center;
-            line-height: 1.8;
-            border-top: 1px dashed var(--textarea-border);
-            padding-top: 12px;
-        }
-        .badge {
-            display: inline-block;
-            background: #10b98115;
-            color: #10b981;
-            border: 1px solid #10b98130;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 11px;
-            margin: 2px;
-            font-family: 'Amiri', serif;
-        }
-        .stats {
-            font-size: 12px;
-            color: var(--note-color);
-            margin: 8px 0;
-            display: flex;
-            gap: 15px;
-        }
-        .examples {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 12px 0;
-        }
-        .examples button {
-            font-size: 12px;
-            padding: 6px 12px;
-            background: var(--textarea-bg);
-            border: 1px solid var(--textarea-border);
-            color: var(--text-color);
-            border-radius: 20px;
-        }
-        .examples button:hover {
-            background: var(--bg-color);
-            border-color: #3b82f6;
-        }
+        textarea:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+        .btn-group { display: flex; gap: 10px; margin: 15px 0; }
+        button { padding: 12px 20px; font-size: 14px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; font-family: 'Cairo', sans-serif; transition: all 0.2s; }
+        .btn-process { background: linear-gradient(135deg,#10b981,#059669); color: white; flex: 2; }
+        .btn-process:hover { transform: translateY(-1px); }
+        .btn-clear { background: #ef4444; color: white; flex: 1; }
+        .btn-copy, .btn-save { background: #3b82f6; color: white; flex: 1; }
+        .footer-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .footer { text-align: center; margin-top: 25px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 14px; font-weight: bold; color: var(--label-color); line-height: 2; }
+        .stats { font-size: 12px; color: var(--note-color); display: flex; gap: 15px; margin-bottom: 10px; }
     </style>
 </head>
 <body data-theme="dark">
 <div class="container">
     <div class="header-flex">
-        <h2>✨ مُشَكِّل الحروف الذكي V3</h2>
-        <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙 تبديل المظهر</button>
+        <h2>مُشَكِّل الحروف الذكي</h2>
+        <button class="theme-toggle" id="themeBtn" onclick="cycleTheme()">🌙 داكن</button>
     </div>
     
     <div class="stats">
-        <span>عدد الكلمات: <b id="wordCount">0</b></span>
-        <span>عدد الحروف: <b id="charCount">0</b></span>
+        <span>الكلمات: <b id="wordCount">0</b></span>
+        <span>الحروف: <b id="charCount">0</b></span>
     </div>
 
     <label class="section-label">النص المراد تشكيله (المدخلات):</label>
-    <textarea id="inputText" placeholder="اكتب أو الصق النص هنا... جرب: ذهب الطالب الى المدرسة صباحا، الشمس والقمر، شعرت بألم شديد" oninput="updateStats()">هذا مثال لنص عربي نريد تشكيله. ذهب الطالب إلى المدرسة صباحا، وكان القمر مضيئا والشمس مشرقة. شعرت بألم، ألم شديد، يؤلم ويحتاج تألم. يا أيها الذين آمنوا، العلم نور.</textarea>
+    <textarea id="inputText" placeholder="اكتب أو الصق النص هنا..." oninput="updateStats()" onfocus="this.placeholder=''" onblur="this.placeholder='اكتب أو الصق النص هنا...'"></textarea>
     
-    <div class="examples">
-        <button onclick="setExample('ذهب الطالب الى المدرسة')">ذهب الطالب الى المدرسة</button>
-        <button onclick="setExample('الشمس والقمر والنجوم')">الشمس والقمر والنجوم</button>
-        <button onclick="setExample('شعرت بألم شديد')">شعرت بألم شديد</button>
-        <button onclick="setExample('والشمس والقمر والكتاب')">والشمس والقمر والكتاب</button>
-        <button onclick="setExample('ألم - يؤلم - تألم - بألم')">ألم - يؤلم - تألم - بألم</button>
-    </div>
-
     <div class="btn-group">
-        <button class="btn-process" onclick="runDiacritization()">✨ تشكيل النص بالقواعد النهائية</button>
+        <button class="btn-process" onclick="runDiacritization()">✨ تشكيل النص</button>
         <button class="btn-clear" onclick="clearFields()">مسح الكل</button>
     </div>
 
@@ -214,150 +138,107 @@
     <textarea id="outputText" readonly placeholder="ستظهر النتيجة هنا..."></textarea>
     
     <div class="footer-actions">
-        <button class="btn-copy" onclick="copyOutput()">⎘ نسخ النتيجة</button>
-        <button class="btn-save" onclick="saveToFile()">💾 حفظ كـ TXT</button>
+        <button class="btn-copy" onclick="copyOutput()">⎘ نسخ</button>
+        <button class="btn-save" onclick="saveToFile()">💾 حفظ TXT</button>
     </div>
 
-    <div class="note">
-        <b>الإصلاحات النهائية V3:</b><br>
-        <span class="badge">الشَّمس = شمسية صحيحة</span>
-        <span class="badge">القْمر = قمرية صحيحة</span>
-        <span class="badge">بألم = لا تُعامل كـ ال تعريف</span>
-        <span class="badge">والشمس = تعمل حتى مع و - ف - ب - ك - ل</span>
-        <br>
-        القاعدة الجوهرية: <b>ال التعريف فقط بـ ا وصل (ا + ل)، أما أ + ل المهموزة (بألم، ألم) فلا تطبق عليها قاعدة اللام.</b><br>
-        مشروع مشترك تم تطويره وإصلاحه مع الصديق المبدع - 2026
+    <div class="footer">
+        برنامج من إعداد الأديب سامح النجار بالاشتراك مع Google Gemini و Meta AI
     </div>
 </div>
 
 <script>
-    // حفظ واسترجاع الثيم
-    const savedTheme = localStorage.getItem('tashkeel-theme');
-    if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
-    
-    function toggleTheme() {
-        const body = document.body;
-        const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        body.setAttribute('data-theme', newTheme);
-        localStorage.setItem('tashkeel-theme', newTheme);
+    let currentTheme = localStorage.getItem('tashkeel-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    document.body.setAttribute('data-theme', currentTheme);
+    updateThemeBtn();
+
+    function updateThemeBtn() {
+        const btn = document.getElementById('themeBtn');
+        if (currentTheme === 'dark') btn.textContent = '🌙 داكن';
+        else if (currentTheme === 'light') btn.textContent = '🔵 أزرق فاتح';
+        else btn.textContent = '⚪ أبيض ناصع';
+    }
+
+    function cycleTheme() {
+        currentTheme = currentTheme === 'dark' ? 'light' : currentTheme === 'light' ? 'white' : 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        document.body.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('tashkeel-theme', currentTheme);
+        updateThemeBtn();
     }
 
     function updateStats() {
         const text = document.getElementById('inputText').value;
         document.getElementById('wordCount').textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
-        document.getElementById('charCount').textContent = text.length;
+        document.getElementById('charCount').textContent = text.replace(/\s/g,'').length;
     }
-    function setExample(txt) {
-        document.getElementById('inputText').value = txt;
-        updateStats();
-        runDiacritization();
-    }
-    updateStats();
 
-    // قاموس الكلمات المحجوزة (سيادة مطلقة)
     const fixedWords = new Map([
-        ["من", "مِنْ"], ["إلى", "إِلَى"], ["عن", "عَنْ"], ["على", "عَلَى"], ["في", "فِي"], 
-        ["حتى", "حَتَّى"], ["رب", "رُبَّ"], ["خلا", "خَلَا"], ["عدا", "عَدَا"], ["حاشا", "حَاشَا"], 
-        ["ثم", "ثُمَّ"], ["أو", "أَوْ"], ["أم", "أَمْ"], ["بل", "بَلْ"], ["لكن", "لَكِنْ"], 
-        ["إلا", "إِلَّا"], ["سوف", "سَوْفَ"], ["قد", "قَدْ"], ["لقد", "لَقَدْ"],
-        ["يا", "يَا"], ["أيا", "أَيَا"], ["هيا", "هَيَا"], ["أي", "أَيْ"], ["أيها", "أَيُّهَا"], ["أيتها", "أَيَّتُهَا"],
-        ["كل", "كُلّ"], ["إليك", "إِلَيْكَ"], ["عليك", "عَلَيْكَ"], 
-        ["له", "لَهُ"], ["لها", "لَهَا"], ["لهم", "لَهُمْ"], ["لهن", "لَهُنَّ"],
-        ["هذا", "هَذَا"], ["هذه", "هَذِهِ"], ["هؤلاء", "هَؤُلَاءِ"], ["هذان", "هَذَانِ"], 
-        ["هذين", "هَذَيْنِ"], ["هاتان", "هَاتَانِ"], ["هاتين", "هَاتَيْنِ"], ["ذلك", "ذَلِكَ"], 
-        ["تلك", "تِلْكَ"], ["أولئك", "أُولَئِكَ"], ["هنا", "هُنَا"], ["هناك", "هُنَاكَ"], ["هنالك", "هُنَالِكَ"],
-        ["الذي", "الَّذِي"], ["التي", "الَّتِي"], ["الذين", "الَّذِينَ"], ["اللائي", "اللَّائِي"], 
-        ["اللاتي", "اللَّاتِي"], ["اللواتي", "اللَّوَاتِي"], ["اللذان", "اللَّذَانِ"], ["اللذين", "اللَّذَيْنِ"], 
-        ["اللتان", "اللَّتَانِ"], ["اللتين", "اللَّتَيْنِ"],
-        ["أنا", "أَنَا"], ["نحن", "نَحْنُ"], ["أنت", "أَنْتَ"], ["أنتِ", "أَنْتِ"], ["أنتما", "أَنْتُمَا"], 
-        ["أنتم", "أَنْتُمْ"], ["أنتن", "أَنْتُنَّ"], ["هو", "هُوَ"], ["هي", "هِيَ"], ["هما", "هُمَا"], 
-        ["هم", "هُمْ"], ["هن", "هُنَّ"]
+        ["من","مِنْ"],["إلى","إِلَى"],["عن","عَنْ"],["على","عَلَى"],["في","فِي"],
+        ["حتى","حَتَّى"],["ثم","ثُمَّ"],["أو","أَوْ"],["أم","أَمْ"],["بل","بَلْ"],["لكن","لَكِنْ"],
+        ["إلا","إِلَّا"],["سوف","سَوْفَ"],["قد","قَدْ"],["لقد","لَقَدْ"],
+        ["يا","يَا"],["أيها","أَيُّهَا"],["كل","كُلّ"],
+        ["هذا","هَذَا"],["هذه","هَذِهِ"],["هؤلاء","هَؤُلَاءِ"],["ذلك","ذَلِكَ"],["تلك","تِلْكَ"],
+        ["الذي","الَّذِي"],["التي","الَّتِي"],["الذين","الَّذِينَ"],
+        ["أنا","أَنَا"],["نحن","نَحْنُ"],["أنت","أَنْتَ"],["هو","هُوَ"],["هي","هِيَ"]
     ]);
 
     const TASHKEEL_REGEX = /[\u064B-\u0652\u0640]/g;
-    function stripTashkeel(s) { return s.replace(TASHKEEL_REGEX, ""); }
-
+    function stripTashkeel(s){ return s.replace(TASHKEEL_REGEX, ""); }
     const DELIM_SPLIT_REGEX = /([\s.,،;!؟:()\[\]{}"'«»–—\n]+)/;
 
-    function processRuleEngine(word) {
-        if (!word) return word;
+    function processRuleEngine(word){
+        if(!word) return word;
         let t = word;
-
-        // === الحل الجذري لمشكلة بألم ===
-        // فقط "ال" بألف وصل (ا+ل) هي ال التعريف
-        // أ + ل المهموزة (ألم، بألم، يؤلم) لا تُعامل كـ ال تعريف
-        // شمسية: ال + تثدذرزسشصضطظلن
         t = t.replace(/ال([تثدذرزسشصضطظلن])/g, "ال$1\u0651\u064E");
-        // قمرية: ال + أبجحخعغفقكهمويءؤئ
         t = t.replace(/ال([أبجحخعغفقكهمويءؤئ])/g, "الْ$1");
-
-        // مدود
         t = t.replace(/([^أإآا\s])ا/g, "$1َا");
         t = t.replace(/([^أإآا\s])ى/g, "$1َى");
         t = t.replace(/([^أإآا\s])و/g, "$1ُو");
         t = t.replace(/([^أإآا\s])ي/g, "$1ِي");
-        // تاء مربوطة
         t = t.replace(/([^أإآا\s])ة/g, "$1َة");
-
         return t;
     }
 
-    function diacritizeText(inputStr) {
-        const strippedInput = stripTashkeel(inputStr);
-        const tokens = strippedInput.split(DELIM_SPLIT_REGEX);
-        const resultTokens = tokens.map(token => {
-            if (!token || DELIM_SPLIT_REGEX.test(token)) return token;
+    function diacritizeText(inputStr){
+        const stripped = stripTashkeel(inputStr);
+        const tokens = stripped.split(DELIM_SPLIT_REGEX);
+        return tokens.map(token => {
+            if(!token || DELIM_SPLIT_REGEX.test(token)) return token;
             const clean = token.trim();
-            if (!clean) return token;
-            if (fixedWords.has(clean)) return fixedWords.get(clean);
+            if(!clean) return token;
+            if(fixedWords.has(clean)) return fixedWords.get(clean);
             return processRuleEngine(token);
-        });
-        return resultTokens.join("");
+        }).join("");
     }
 
-    function runDiacritization() {
+    function runDiacritization(){
         const input = document.getElementById('inputText').value;
-        if (!input.trim()) { alert("الرجاء إدخال نص أولاً!"); return; }
-        const result = diacritizeText(input);
-        document.getElementById('outputText').value = result;
-        // حفظ في localStorage للسجل
-        try {
-            const history = JSON.parse(localStorage.getItem('tashkeel-history') || '[]');
-            history.unshift({ input: input.slice(0,100), output: result.slice(0,200), date: new Date().toISOString() });
-            localStorage.setItem('tashkeel-history', JSON.stringify(history.slice(0,20)));
-        } catch(e){}
+        if(!input.trim()){ alert("الرجاء إدخال نص أولاً!"); return; }
+        document.getElementById('outputText').value = diacritizeText(input);
     }
-
-    function clearFields() {
-        document.getElementById('inputText').value = '';
-        document.getElementById('outputText').value = '';
-        updateStats();
+    function clearFields(){ 
+        document.getElementById('inputText').value=''; 
+        document.getElementById('outputText').value=''; 
+        updateStats(); 
+        document.getElementById('inputText').focus();
+        document.getElementById('inputText').placeholder='اكتب أو الصق النص هنا...';
     }
-
-    function copyOutput() {
+    function copyOutput(){
         const out = document.getElementById('outputText');
-        if (!out.value.trim()) { alert("لا توجد نتيجة لنسخها"); return; }
-        out.select();
-        document.execCommand('copy');
-        alert("✓ تم نسخ النص المشكول");
+        if(!out.value.trim()){ alert("لا توجد نتيجة"); return; }
+        out.select(); document.execCommand('copy');
+        alert("✓ تم النسخ");
     }
-
-    function saveToFile() {
+    function saveToFile(){
         const result = document.getElementById('outputText').value;
-        if (!result.trim()) { alert("لا توجد مخرجات لحفظها!"); return; }
-        const blob = new Blob(["\uFEFF" + result], { type: 'text/plain;charset=utf-8' });
+        if(!result.trim()){ alert("لا توجد مخرجات"); return; }
+        const blob = new Blob(["\uFEFF"+result], {type:'text/plain;charset=utf-8'});
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'tashkeel_output_V3_' + new Date().toISOString().slice(0,10) + '.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        const a = document.createElement('a'); a.href=url; a.download='tashkeel_'+new Date().toISOString().slice(0,10)+'.txt';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
-    
-    // تشكيل تلقائي عند التحميل
-    window.addEventListener('load', () => { if (document.getElementById('inputText').value) runDiacritization(); });
 </script>
 </body>
 </html>
